@@ -14,11 +14,15 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ContactManagerApplication.Settings;
+using SendGrid.Extensions.DependencyInjection;
+using ContactManagerApplication.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,11 +32,72 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI()
+.AddDefaultTokenProviders();
+
+builder.Services.AddTransient<IEmailSender, EmailSenderService>();
+
+builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings"));
+builder.Services.AddSendGrid(options =>
+{
+    options.ApiKey = builder.Configuration.GetSection("SendGridSettings").GetValue<string>("ApiKey");
+});
+
+builder.Services.AddScoped<IEmailSender,EmailSenderService >(); 
+
+//Add LinkedIn Authentication
+builder.Services.AddAuthentication()
+    .AddLinkedIn(options => {
+        options.ClientId = builder.Configuration["Authentication:LinkedIn:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:LinkedIn:ClientSecret"];
+
+        // Configure OAuth Scopes and Endpoints
+        
+        options.Scope.Add("email");
+        options.UserInformationEndpoint = "https://api.linkedin.com/v2/userinfo";
+
+        options.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents
+        {
+            OnCreatingTicket = async context =>
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+
+                var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
+                response.EnsureSuccessStatusCode();
+
+                //processing user info
+                var userJson = await response.Content.ReadAsStringAsync();
+                using (var user = JsonDocument.Parse(userJson))
+                {
+                  
+                    var email = user.RootElement.GetProperty("email").GetString();
+
+                  if (string.IsNullOrEmpty(email))
+                    {
+                        throw new InvalidOperationException("One or more required user properties are missing.");
+                    }
 
 
+                  
+                    context.Identity.AddClaim(new Claim(ClaimTypes.Email, email));
+                }
 
+            },
 
+            //Handling Remote Authentication Failure
+            OnRemoteFailure = context =>
+            {
+                context.Response.Redirect("/Account/Login?error=" + context.Failure.Message);
+                context.HandleResponse();
+                return Task.CompletedTask;
+            }
+        };
+    });
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -77,8 +142,8 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Create admin user
-    var adminEmail = "natnaelgeletanegm@gmail.com"; // Specify admin email
-    var adminPassword = "159753@Nat"; // Specify a secure admin password
+    var adminEmail = "natnael@gmail.com"; // Specify admin email
+    var adminPassword = ""; // Specify a secure admin password
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
     if (adminUser == null)
