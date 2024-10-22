@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\natna\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj": {}
+    "C:\\Users\\tamirat\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\natna\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj": {
+    "C:\\Users\\tamirat\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\natna\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj",
+        "projectUniqueName": "C:\\Users\\tamirat\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj",
         "projectName": "ContactManagerApplication",
-        "projectPath": "C:\\Users\\natna\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj",
-        "packagesPath": "C:\\Users\\natna\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\natna\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\obj\\",
+        "projectPath": "C:\\Users\\tamirat\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\ContactManagerApplication.csproj",
+        "packagesPath": "C:\\Users\\tamirat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tamirat\\source\\repos\\ContactManagerApplication\\ContactManagerApplication\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\natna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\tamirat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -91,6 +95,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[8.0.5, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.29.3, )"
+            },
+            "SendGrid.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             }
           },
           "imports": [

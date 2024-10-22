@@ -1,0 +1,87 @@
+﻿@model ContactManagerApplication.Models.SendInvitationViewModel
+
+@{
+    ViewData["Title"] = "Send Invitation";
+}
+
+<h2 class="text-center">Send Invitation</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success text-center">
+        @ViewBag.Message
+    </div>
+}
+
+<div class="container mt-4">
+    <form asp-action="SendInvitation" method="post" class="form-border">
+        <div class="form-group">
+            <label for="Email">Email Address</label>
+            <input type="email" class="form-control" id="Email" name="Email" asp-for="Email" required />
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary animated-button">Send Invitation</button>
+        </div>
+    </form>
+</div>
+
+    <style>
+        .form-border {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+                transform: translateY(-3px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            }
+
+        .animated-button {
+            position: relative;
+            overflow: hidden;
+            padding: 10px 20px; /* Adjust padding for better button size */
+        }
+
+            .animated-button::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.3);
+                top: -100%;
+                left: 0;
+                transition: top 0.4s;
+                z-index: 0;
+            }
+
+            .animated-button:hover::after {
+                top: 0;
+            }
+
+            .animated-button span {
+                position: relative;
+                z-index: 1;
+            }
+    </style>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}}

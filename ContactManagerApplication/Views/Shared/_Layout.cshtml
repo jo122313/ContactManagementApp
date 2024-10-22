@@ -30,13 +30,23 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
+                        
+
                         @if (SignInManager.IsSignedIn(User))
                         {
+                           
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="/Invitation/SendInvitation">Send Invitation</a>
+                                </li>
+                            
+                               
+                            
                             if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="/UserManagement/List">User Management</a>
                                 </li>
+                               
                             }
                         }
 
