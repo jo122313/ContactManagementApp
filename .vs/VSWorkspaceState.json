@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\ContactManagerApplication",
+    "\\ContactManagerApplication\\Areas",
+    "\\ContactManagerApplication\\Areas\\Identity",
+    "\\ContactManagerApplication\\Areas\\Identity\\Pages",
+    "\\ContactManagerApplication\\Areas\\Identity\\Pages\\Account",
+    "\\ContactManagerApplication\\Controllers"
+  ],
+  "SelectedNode": "\\ContactManagerApplication\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}
